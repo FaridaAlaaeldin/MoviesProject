@@ -10,13 +10,19 @@ public class Movie
         private String title;
         private String posterPath;
         private String overview;
-
+        private int favorite;
 
 
         public Movie()
         {
-
+            favorite =0;
         }
+
+        public void setFavorite(){favorite=1;}
+
+        public int getFavorite(){return favorite;}
+
+        public void unFavorite(){favorite=0;}
 
         public void setName(String name)
         {
