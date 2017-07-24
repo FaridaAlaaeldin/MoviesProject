@@ -1,4 +1,4 @@
-package farida.moviesproject.contractor;
+package farida.moviesproject.data;
 
 import android.content.ContentValues;
 import android.content.Context;

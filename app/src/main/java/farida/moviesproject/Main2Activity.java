@@ -1,7 +1,6 @@
 package farida.moviesproject;
 
 import android.graphics.Color;
-import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import farida.moviesproject.contractor.MovieHelper;
-import farida.moviesproject.model.Movie;
+import farida.moviesproject.data.MovieHelper;
 
 public class Main2Activity extends AppCompatActivity {
 

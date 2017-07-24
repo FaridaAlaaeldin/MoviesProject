@@ -1,4 +1,4 @@
-package farida.moviesproject.contractor;
+package farida.moviesproject.data;
 
 /**
  * Created by Farida Alaaeldin on 24-Jul-17.

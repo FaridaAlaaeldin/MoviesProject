@@ -5,21 +5,16 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -30,12 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import farida.moviesproject.adapter.Adapter;
-import farida.moviesproject.contractor.MovieHelper;
+import farida.moviesproject.data.MovieHelper;
 import farida.moviesproject.model.Movie;
 import farida.moviesproject.adapter.RecyclerViewClickListener;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener{
 
+    boolean first=true;
+    int globalPosition;
     Adapter adapter,fav;
     String sector="http://image.tmdb.org/t/p/w342/";
     List<Movie> myMovies;
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         setContentView(R.layout.activity_main);
 
 
-
+        globalPosition=0;
         display=(RecyclerView)findViewById(R.id.display);
         display.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
 
@@ -62,6 +59,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         myMovies=new ArrayList<>();
 
+       /* favoriteList=new ArrayList<>();
+        row=movieHelper.select();
+        row.moveToFirst();
+        for(int i=0;i<row.getCount();i++)
+        {
+
+            Movie temp=new Movie();
+            temp.setName(row.getString(0));
+            temp.setOverView(row.getString(1));
+            temp.setPosterPath(row.getString(2));
+            if (Integer.parseInt(row.getString(3))==1&&myMovies.get(i).getName()==temp.getName()) {
+                temp.setFavorite();
+                myMovies.get(i).setFavorite();
+            }
+            else
+                temp.unFavorite();
+            favoriteList.add(temp);
+
+
+
+
+            row.moveToNext();
+        }*/
 
         adapter=new Adapter(getApplicationContext(),myMovies,this);
         display.setAdapter(adapter);
@@ -73,22 +93,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         url="https://api.themoviedb.org/3/discover/movie?api_key=69f8d44407d7b73a4103add4c76fccb6";
         getMovieData(url);
 
-        favoriteList=new ArrayList<>();
-        row=movieHelper.select();
-        row.moveToFirst();
-        for(int i=0;i<row.getCount();i++)
-        {
-            Movie temp=new Movie();
-            temp.setName(row.getString(0));
-            temp.setOverView(row.getString(1));
-            temp.setPosterPath(row.getString(2));
-            if (Integer.parseInt(row.getString(3))==1)
-                temp.setFavorite();
-            else
-                temp.unFavorite();
-            favoriteList.add(temp);
-            row.moveToNext();
-        }
+
 
 
 
@@ -138,10 +143,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         Intent myintent=new Intent(MainActivity.this,Main2Activity.class);
 
-        if (bool==1)
-            setTitle("Movies");
-        else
-            setTitle("Favorites");
+        globalPosition=position;
 
         if(bool==1)
         {
@@ -162,6 +164,45 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         startActivity(myintent);
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+if(first==true)
+{
+    first=false;
+    return;
+}
+
+        row=movieHelper.select();
+        row.moveToFirst();
+        for(int i=0;i<row.getCount();i++) {
+
+
+           if (myMovies.get(i).getName().equals(row.getString(0)))
+           { if (Integer.parseInt(row.getString(3)) == 1)
+                myMovies.get(i).setFavorite();
+            else
+                myMovies.get(i).unFavorite();}
+
+
+            row.moveToNext();
+        }
+      /*  row=movieHelper.select();
+        row.moveToFirst();
+        for(int i=0;i<globalPosition;i++)
+        {
+           if( Integer.parseInt(row.getString(3))==1)
+            {
+                 myMovies.get(globalPosition).setFavorite();
+
+            }
+            row.moveToNext();
+        }
+*/
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -173,14 +214,39 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     public boolean onOptionsItemSelected(MenuItem item) {
         int id=item.getItemId();
 
+
         if(id==R.id.allMovies)
         {
+
             bool=1;
+            setTitle("Movies");
             display.setAdapter(adapter);
         }
         else
         {
             bool=0;
+            setTitle("Favorites");
+            favoriteList=new ArrayList<>();
+            row=movieHelper.select();
+            row.moveToFirst();
+            for(int i=0;i<row.getCount();i++)
+            {
+
+                Movie temp=new Movie();
+                temp.setName(row.getString(0));
+                temp.setOverView(row.getString(1));
+                temp.setPosterPath(row.getString(2));
+                if (Integer.parseInt(row.getString(3))==1)
+                    temp.setFavorite();
+                else
+                    temp.unFavorite();
+                favoriteList.add(temp);
+
+
+
+
+                row.moveToNext();
+            }
           fav=new Adapter(getApplicationContext(),favoriteList,this);
             display.setAdapter(fav);
             adapter.notifyDataSetChanged();
