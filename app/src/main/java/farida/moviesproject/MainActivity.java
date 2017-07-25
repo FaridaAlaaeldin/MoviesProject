@@ -166,7 +166,42 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
 
     @Override
-    protected void onStart() {
+    protected void onRestart() {
+        super.onRestart();
+
+
+        row=movieHelper.select();
+        row.moveToFirst();
+        for(int i=0;i<row.getCount();i++)
+        {
+            int t=Integer.parseInt(row.getString(3));
+            for (int j=0;j<myMovies.size();j++)
+            {
+                if (myMovies.get(j).getName().equals(row.getString(0)))
+                {
+                    if (t == 1)
+                    {
+                        myMovies.get(j).setFavorite();
+
+                    }
+                    else
+                        myMovies.get(j).unFavorite();
+
+                    return;
+                }
+            }
+
+            row.moveToNext();
+        }
+
+
+
+
+
+    }
+
+   /* @Override
+    protected void () {
         super.onStart();
 if(first==true)
 {
@@ -187,7 +222,7 @@ if(first==true)
 
 
             row.moveToNext();
-        }
+        }*/
       /*  row=movieHelper.select();
         row.moveToFirst();
         for(int i=0;i<globalPosition;i++)
@@ -201,7 +236,7 @@ if(first==true)
         }
 */
 
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -43,7 +43,9 @@ public class Main2Activity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(imageURL).into(outImage);
 
         if(favoriteStatus==1)
-            favorite.setTextColor(Color.RED);
+        { favorite.setTextColor(Color.RED);
+        clicked=1;
+        }
         else
             favorite.setTextColor(Color.BLACK);
 
