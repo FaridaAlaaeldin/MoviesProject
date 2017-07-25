@@ -175,9 +175,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         for(int i=0;i<row.getCount();i++)
         {
             int t=Integer.parseInt(row.getString(3));
+            String s=row.getString(0);
             for (int j=0;j<myMovies.size();j++)
             {
-                if (myMovies.get(j).getName().equals(row.getString(0)))
+                if (myMovies.get(j).getName().equals(s))
                 {
                     if (t == 1)
                     {
@@ -187,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                     else
                         myMovies.get(j).unFavorite();
 
-                    return;
                 }
+
             }
 
             row.moveToNext();
@@ -255,6 +256,38 @@ if(first==true)
 
             bool=1;
             setTitle("Movies");
+
+
+            for(int i=0;i<myMovies.size();i++)
+                myMovies.get(i).unFavorite();
+
+            row=movieHelper.select();
+            row.moveToFirst();
+            for(int i=0;i<row.getCount();i++)
+            {
+                int t=Integer.parseInt(row.getString(3));
+                String s=row.getString(0);
+                for (int j=0;j<myMovies.size();j++)
+                {
+                    if (myMovies.get(j).getName().equals(s))
+                    {
+                        if (t == 1)
+                        {
+                            myMovies.get(j).setFavorite();
+
+                        }
+                        else
+                            myMovies.get(j).unFavorite();
+
+                    }
+
+                }
+
+                row.moveToNext();
+            }
+
+
+
             display.setAdapter(adapter);
         }
         else

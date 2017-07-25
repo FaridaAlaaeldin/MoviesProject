@@ -1,5 +1,6 @@
 package farida.moviesproject;
 
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,15 +56,16 @@ public class Main2Activity extends AppCompatActivity {
             public void onClick(View view) {
 
                 MovieHelper movieHelper=new MovieHelper(Main2Activity.this);
-                if (clicked==0)
+
+                if (favoriteStatus==0)
                 {
-                    clicked=1;
+                    favoriteStatus=1;
                     favorite.setTextColor(Color.RED);
                     movieHelper.insert(title,overview,imageURL,"1");
                 }
                 else
                 {
-                    clicked=0;
+                    favoriteStatus=0;
                     favorite.setTextColor(Color.BLACK);
                     movieHelper.delete(title);
                 }

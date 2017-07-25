@@ -36,6 +36,20 @@ public class MovieHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+
+    public void update(String title,String overview,String imageLink,String favorite)
+    {
+        SQLiteDatabase DB=getWritableDatabase();
+        ContentValues row=new ContentValues();
+        row.put(MovieSchema.FavoriteMovies.tableColumnTitle,title);
+
+        String selection=MovieSchema.FavoriteMovies.tableColumnTitle+" LIKE ?";
+        String selectionArguments[]={title};
+
+        int count = DB.update(MovieSchema.FavoriteMovies.tableName,row,selection,selectionArguments);
+
+    }
+
     public void insert(String title,String overview,String imageLink,String favorite)
     {
         SQLiteDatabase DB=getWritableDatabase();
