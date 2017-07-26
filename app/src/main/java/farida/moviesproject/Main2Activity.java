@@ -19,8 +19,9 @@ public class Main2Activity extends AppCompatActivity {
     TextView outTitle,outOverview;
     ImageView outImage;
     Button favorite;
-    int clicked=0;
     int favoriteStatus;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,9 @@ public class Main2Activity extends AppCompatActivity {
         imageURL=data.getString("posterpath");
         favoriteStatus=data.getInt("favorite");
 
+
+
+
         outTitle=(TextView)findViewById(R.id.movieTitleOutput);
         outOverview=(TextView)findViewById(R.id.overviewOutput);
         outImage=(ImageView)findViewById(R.id.displayImage);
@@ -43,12 +47,12 @@ public class Main2Activity extends AppCompatActivity {
         outOverview.setText(overview);
         Picasso.with(getApplicationContext()).load(imageURL).into(outImage);
 
+
         if(favoriteStatus==1)
-        { favorite.setTextColor(Color.RED);
-        clicked=1;
-        }
+            favorite.setTextColor(Color.RED);
         else
             favorite.setTextColor(Color.BLACK);
+
 
 
         favorite.setOnClickListener(new View.OnClickListener() {
@@ -57,11 +61,10 @@ public class Main2Activity extends AppCompatActivity {
 
                 MovieHelper movieHelper=new MovieHelper(Main2Activity.this);
 
-                if (favoriteStatus==0)
-                {
-                    favoriteStatus=1;
+                if (favoriteStatus==0) {
+                    favoriteStatus = 1;
                     favorite.setTextColor(Color.RED);
-                    movieHelper.insert(title,overview,imageURL,"1");
+                    movieHelper.insert(title, overview, imageURL, "1");
                 }
                 else
                 {
